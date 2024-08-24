@@ -1,2 +1,2 @@
 # ejemplo de código 
-rnorm(100)
+1 + 1
