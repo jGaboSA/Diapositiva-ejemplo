@@ -1,30 +1,234 @@
 ---
-title: "Primer diapositiva"
-author: "J Gabriel SA"
+title: "Aprendamos un poco más de RevealJS"
+author: "Irwing S. Saldaña"
 format: 
-   revealjs:
+  revealjs:
+    theme: dark
+    slide-number: true
     incremental: true
-    theme: league
-editor: visual
+    transition: convex
+    transition-speed: slow
+    code-overlays: true
+    width: 1280
+    height: 720
+    scrollable: true
+title-slide-attributes:
+  data-background-image: "https://static.vecteezy.com/system/resources/previews/012/184/489/non_2x/background-design-for-power-point-suitable-for-panda-ppt-background-free-vector.jpg"
+  data-background-size: cover
+  data-background-opacity: "1"   
 ---
 
-## Quarto
+## Soy una diapositiva invisible {visibility="hidden"}
 
-Quarto enables you to weave together content and executable code into a finished presentation. To learn more about Quarto presentations see <https://quarto.org/docs/presentations/>.
+Aquí hay un top secret.
 
-#Veamos el análisis
 
-## Bullets
+## Temas de RevealJS (diapo centrada) {.center}
 
-When you click the **Render** button a document will be generated that includes:
+:::: {.columns}
 
--   Content authored with markdown
--   Output from executable code
+::: {.column width="40%"}
+- beige
+- blood
+- dark
+- default
+- league
+- moon
+:::
 
-## Code
+::: {.column width="60%"}
+- night
+- serif
+- simple
+- sky
+- solarized
+:::
 
-When you click the **Render** button a presentation will be generated that includes both content and the output of embedded code. You can embed code like this:
+::::
 
-```{r, echo=TRUE}
-1 + 1
+
+## Lista Numerada
+
+1. none (Sin transición)
+1. fade (Desvanecimento cruzado)
+1. slide (Movimiento horizontal)
+1. convex (Movimiento convexo en ángulo)
+1. concave (Movimiento concavo en ángulo)
+1. zoom	(Aplica zoom) 
+
+
+## Imagen desde la web
+![Quarto Logo](https://quarto.org/images/demo-jupyter-plain.png)
+
+## tabla web
+![tablaweb](https://help.qlik.com/es-ES/cloud-services/Subsystems/Hub/Content/Resources/Images/ui_gen_BarChart.png)
+
+## tablaaass
+
+![grafico](imagenes/unnamed-chunk-2-1.png)
+
+
+## Colocar un gran texto que nunca se desborda
+
+::: {.r-fit-text}
+masterX
+:::
+
+## Añadiendo fragmentos 
+
+::: {.fragment}
+Fade in
+:::
+
+::: {.fragment .fade-out}
+Fade out
+:::
+
+::: {.fragment .highlight-red}
+Highlight red (resalta en rojo)
+:::
+
+::: {.fragment .fade-in-then-out}
+Fade in, then out
+:::
+
+::: {.fragment .fade-up}
+Slide up while fading in
+:::
+
+
+## Añadiendo orden a los fragmentos
+
+::: {.fragment fragment-index=3}
+Aparece al final
+:::
+
+::: {.fragment fragment-index=1}
+Aparece primero
+:::
+
+::: {.fragment fragment-index=2}
+Aparece segundo
+:::
+
+
+## Paneles con Código y Gráfico {transition="fade" transition-speed="fast"}
+
+::: {.panel-tabset}
+
+## Código
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-line-highlight: 2
+library(ggplot2)
+ggplot(mtcars, aes(x = wt, y = mpg)) +
+  geom_point() +
+  theme_minimal() +
+  labs(title = "Gráfico de MPG vs. Peso")
 ```
+
+## Plot
+
+```{r}
+#| echo: false
+#| eval: true
+#| fig-width: 10
+#| fig-height: 5
+#| fig-align: "center"
+library(ggplot2)
+ggplot(mtcars, aes(x = wt, y = mpg)) +
+  geom_point() +
+  theme_minimal() +
+  labs(title = "Gráfico de MPG vs. Peso")
+```
+
+## Data
+
+```{r}
+mtcars
+```
+
+:::
+
+## Insertando interactividad: mapas
+
+```{r}
+#| echo: false
+#| eval: true
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: "center"
+
+# Cargar la librería leaflet
+library(leaflet)
+
+# Crear un mapa básico
+leaflet() %>%
+  addTiles() %>%  # Añadir el mapa base
+  setView(lng = -78.7038, lat = -5.4168, zoom = 6) %>%  # Centrar el mapa en Madrid, España
+  addMarkers(lng = -3.7038, lat = 40.4168, popup = "Madrid")
+```
+
+## Insertando interactividad: Plotly
+
+```{r}
+#| echo: false
+#| eval: true
+#| fig-width: 12
+#| fig-height: 6.5
+#| fig-align: "center"
+
+# Cargar la librería plotly
+library(plotly)
+
+# Crear un gráfico 3D con plotly
+fig <- plot_ly(
+  data = mtcars,
+  x = ~wt,
+  y = ~mpg,
+  z = ~hp,
+  type = 'scatter3d',
+  mode = 'markers',
+  marker = list(
+    size = 5,
+    color = ~mpg,
+    colorscale = 'Viridis',
+    showscale = TRUE,
+    opacity = 0.8
+  )
+)
+
+# Configurar el diseño del gráfico
+fig <- fig %>%
+  layout(
+    title = "Relación 3D: Peso vs MPG vs Potencia",
+    scene = list(
+      xaxis = list(title = 'Peso (wt)'),
+      yaxis = list(title = 'Millas por Galón (mpg)'),
+      zaxis = list(title = 'Potencia (hp)')
+    ),
+    annotations = list(
+      list(
+        x = 0.1,
+        y = 1.1,
+        text = "Gráfico 3D interactivo",
+        showarrow = FALSE,
+        xref = 'paper',
+        yref = 'paper',
+        font = list(
+          size = 12,
+          color = 'black'
+        )
+      )
+    )
+  )
+
+# Mostrar el gráfico
+fig
+
+```
+
+
+
